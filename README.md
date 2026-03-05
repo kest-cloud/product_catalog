@@ -111,7 +111,7 @@ Human decisions included: overall architecture, dependency choices (Provider, Ge
 
 ```bash
 flutter pub get
-flutter run
+flutter run  
 ```
 
 Default target: device or simulator. For web (e.g. to test responsive layout):
