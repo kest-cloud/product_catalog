@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:product_catalog/features/products/data/domain/repository/products_repo.dart';
 import 'package:product_catalog/features/products/presentation/notifier/products_notifier.dart';
 import 'package:product_catalog/features/products/presentation/view/master_detail_shell.dart';
+import 'package:product_catalog/features/products/presentation/view/product_detail_page.dart';
 import 'package:product_catalog/features/showcase/presentation/view/showcase_page.dart';
 import 'package:provider/provider.dart';
 
@@ -53,37 +54,32 @@ GoRouter createRouter(ProductsRepo productsRepo) {
               );
             },
           ),
-          GoRoute(
-            path: '/products/:id',
-            name: AppRoutes.productDetail,
-            pageBuilder: (BuildContext context, GoRouterState state) {
-              return CustomTransitionPage<void>(
-                key: state.pageKey,
-                transitionsBuilder:
-                    (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child,
-                    ) {
-                      final curved = CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeOutCubic,
-                        reverseCurve: Curves.easeInCubic,
-                      );
-                      return SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(1, 0),
-                          end: Offset.zero,
-                        ).animate(curved),
-                        child: child,
-                      );
-                    },
-                child: const SizedBox.shrink(),
-              );
-            },
-          ),
         ],
+      ),
+      GoRoute(
+        path: '/products/:id',
+        name: AppRoutes.productDetail,
+        pageBuilder: (BuildContext context, GoRouterState state) {
+          final String id = state.pathParameters['id'] ?? '';
+          return CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder:
+                (
+                  BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child,
+                ) {
+                  final curved = CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
+                    reverseCurve: Curves.easeInCubic,
+                  );
+                  return FadeTransition(opacity: curved, child: child);
+                },
+            child: ProductDetailPage(productId: id, repo: productsRepo),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.showcase,

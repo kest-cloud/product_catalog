@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:product_catalog/app/router.dart';
-import 'package:product_catalog/core/layout/breakpoints.dart';
 import 'package:product_catalog/core/theme/theme_controller.dart';
 import 'package:product_catalog/core/theme/app_theme.dart';
 import 'package:product_catalog/design_system/widgets/app_button.dart';
@@ -160,16 +159,7 @@ class _CatalogPageState extends State<CatalogPage> {
                       return _AnimatedProductTile(
                         index: index,
                         product: p,
-                        onTap: () {
-                          final bool tablet =
-                              MediaQuery.sizeOf(context).width >=
-                                  Breakpoints.tablet;
-                          if (tablet) {
-                            context.go(AppRoutes.productDetailPath(p.id));
-                          } else {
-                            context.push(AppRoutes.productDetailPath(p.id));
-                          }
-                        },
+                        onTap: () => context.push(AppRoutes.productDetailPath(p.id)),
                         toCardModel: _toCardModel,
                       );
                     },

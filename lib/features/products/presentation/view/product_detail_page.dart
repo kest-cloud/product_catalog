@@ -2,6 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:product_catalog/core/theme/app_theme.dart';
 import 'package:product_catalog/design_system/widgets/error_state.dart';
@@ -67,14 +68,26 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if (_loading) {
       return Scaffold(
         backgroundColor: AppTheme.scaffoldGradientBackground(context),
-        appBar: AppBar(title: const Text('Product')),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.pop(),
+          ),
+          title: const Text('Product'),
+        ),
         body: const _DetailSkeleton(),
       );
     }
     if (_error != null) {
       return Scaffold(
         backgroundColor: AppTheme.scaffoldGradientBackground(context),
-        appBar: AppBar(title: const Text('Product')),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.pop(),
+          ),
+          title: const Text('Product'),
+        ),
         body: ErrorState(
           message: _error!,
           onRetry: _loadProduct,
@@ -87,6 +100,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     return Scaffold(
       backgroundColor: AppTheme.scaffoldGradientBackground(context),
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
         title: Text(
           product.title,
           maxLines: 1,
