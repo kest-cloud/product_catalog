@@ -5,11 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:product_catalog/core/layout/breakpoints.dart';
 import 'package:product_catalog/features/products/data/domain/repository/products_repo.dart';
 import 'package:product_catalog/features/products/presentation/view/catalog_page.dart';
-import 'package:product_catalog/features/products/presentation/view/product_detail_page.dart';
 import 'package:product_catalog/features/products/presentation/widgets/empty_detail_state.dart';
 
-/// Responsive shell: tablet = split view (list + detail), phone = single pane.
-/// State is synced via route: /products/:id.
+/// Responsive shell: tablet = split view (list + empty detail pane), phone = list only.
+/// Product detail is pushed as a top-level route so Hero transition works from list to detail.
 class MasterDetailShell extends StatelessWidget {
   const MasterDetailShell({
     required this.state,
@@ -25,6 +24,7 @@ class MasterDetailShell extends StatelessWidget {
   }
 
   /// Extracts product id from current route (e.g. /products/123 -> 123).
+  /// Used for tests and any future shell-based detail (e.g. tablet split).
   static String? selectedProductId(GoRouterState state) {
     return selectedProductIdFromPath(state.uri.path, state.pathParameters);
   }
@@ -43,26 +43,16 @@ class MasterDetailShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool tablet = isTablet(context);
-    final String? selectedId = selectedProductId(state);
 
     if (tablet) {
       return Row(
         children: <Widget>[
           const Expanded(flex: 1, child: CatalogPage()),
-          Expanded(
-            flex: 1,
-            child: selectedId != null && selectedId.isNotEmpty
-                ? ProductDetailPage(productId: selectedId, repo: productsRepo)
-                : const EmptyDetailState(),
-          ),
+          const Expanded(flex: 1, child: EmptyDetailState()),
         ],
       );
     }
 
-    // Phone: single pane from nested route
-    if (selectedId != null && selectedId.isNotEmpty) {
-      return ProductDetailPage(productId: selectedId, repo: productsRepo);
-    }
     return const CatalogPage();
   }
 }
