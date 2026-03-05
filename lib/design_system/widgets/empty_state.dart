@@ -39,15 +39,14 @@ class EmptyState extends StatelessWidget {
       child: TweenAnimationBuilder<double>(
         tween: Tween<double>(begin: 0.9, end: 1),
         duration: const Duration(milliseconds: 450),
-        curve: Curves.easeOutBack,
+        curve: Curves.easeOutCubic,
         builder: (BuildContext context, double value, Widget? child) {
-          final double clamped = value.clamp(0.0, 1.0);
+          // Curve can overshoot (e.g. easeOutBack) or produce NaN on rapid rebuilds
+          final double safeOpacity = value.isNaN ? 1.0 : value.clamp(0.0, 1.0);
+          final double safeScale = value.isNaN ? 1.0 : value.clamp(0.0, 2.0);
           return Opacity(
-            opacity: clamped,
-            child: Transform.scale(
-              scale: value,
-              child: child,
-            ),
+            opacity: safeOpacity,
+            child: Transform.scale(scale: safeScale, child: child),
           );
         },
         child: Container(
@@ -90,10 +89,7 @@ class EmptyState extends StatelessWidget {
               const SizedBox(height: 16),
               AppDisplayText(title),
               const SizedBox(height: 8),
-              AppBodyText(
-                subtitle,
-                textAlign: TextAlign.center,
-              ),
+              AppBodyText(subtitle, textAlign: TextAlign.center),
               if (ctaLabel != null && onCtaTap != null) ...<Widget>[
                 const SizedBox(height: 20),
                 AppButton(
@@ -109,4 +105,3 @@ class EmptyState extends StatelessWidget {
     );
   }
 }
-
