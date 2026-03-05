@@ -89,7 +89,8 @@ This project was developed with AI assistance (Cursor/LLM) for:
 - Implementing phases from a written specification (foundation, design system, data layer, state, list/detail screens, responsive shell, tests, documentation).
 - Boilerplate and repetitive code (entity parsing, repository wiring, widget structure).
 - Refactors (e.g. switching from Riverpod to GetIt+Provider,Yeah, I started with Riverpod, and then made a switch to Provider.. adding Either/dartz, fixing category parsing when API returned objects instead of strings).
-- README and in-code documentation.
+- README and in-code documentation. Documentation reviewed by me. 
+- Unit tests
 
 Human decisions included: overall architecture, dependency choices (Provider, GetIt, dartz), API and UI behaviour (search + category, master–detail), and design priorities (simplicity, clarity, senior-level quality).
 
@@ -103,7 +104,7 @@ Human decisions included: overall architecture, dependency choices (Provider, Ge
 - **Single locale**: No i18n/l10n; all strings are English.
 - **Font**: `AppTheme` references `fontFamily: 'SF Pro Display'`; if the font is not bundled, the platform default is used.
 - **Tests**: Coverage focuses on domain entities, repository logic, and notifier behaviour. Widget and golden tests exist for design system and key flows; full integration or E2E tests are not included.
-
+--**UI** With more time, I can always make the UI and even the eprience better
 ---
 
 ## Running the app
