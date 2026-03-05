@@ -41,8 +41,9 @@ class EmptyState extends StatelessWidget {
         duration: const Duration(milliseconds: 450),
         curve: Curves.easeOutBack,
         builder: (BuildContext context, double value, Widget? child) {
+          final double clamped = value.clamp(0.0, 1.0);
           return Opacity(
-            opacity: value,
+            opacity: clamped,
             child: Transform.scale(
               scale: value,
               child: child,
